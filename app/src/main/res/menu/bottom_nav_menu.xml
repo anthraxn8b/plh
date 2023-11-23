@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_init"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/title_init" />
+
+    <item
+        android:id="@+id/navigation_checklists"
+        android:icon="@drawable/baseline_checklist_rtl_24"
+        android:title="@string/title_checklists" />
+
+    <item
+        android:id="@+id/navigation_atc"
+        android:icon="@drawable/baseline_settings_input_antenna_24"
+        android:title="@string/title_atc" />
+
+</menu>

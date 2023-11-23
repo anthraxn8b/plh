@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">flight helper</string>
+    <string name="title_init">INIT</string>
+    <string name="title_checklists">CHECKLISTS</string>
+    <string name="title_atc">ATC</string>
+    <string name="airframe_label">AIRFRAME</string>
+    <string name="reset">RESET</string>
+    <string name="next_section">NEXT SECTION</string>
+    <string name="status_symbol_description">Shows the checklist item confirmation status like a checkbox.</string>
+    <string name="visible_description_demo_text">ignition</string>
+    <string name="visible_confirmation_demo_text">off</string>
+    <string name="select_checklist">CHECKLISTS</string>
+    <string name="toggle_sst">TOGGLE SPEECH RECOGNITION</string>
+</resources>

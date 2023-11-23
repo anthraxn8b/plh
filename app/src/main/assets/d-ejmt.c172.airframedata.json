@@ -1,0 +1,75 @@
+{
+  "airframe": "C172 - D-EJMT",
+  "airframeId" : "C172",
+  "checklists": [
+    {
+      "name": "preflight check",
+      "sections": [
+        {
+          "name": "cockpit",
+          "items": [
+            {
+              "visibleDescription": "logbook",
+              "visibleTask": "on board"
+            },
+            {
+              "visibleDescription": "ignition",
+              "visibleTask": "off"
+            },
+            {
+              "visibleDescription": "circuit breakers",
+              "visibleTask": "all in"
+            },
+            {
+              "visibleDescription": "main switch",
+              "visibleTask": "on"
+            },
+            {
+              "visibleDescription": "beacon",
+              "visibleTask": "on & visual",
+              "audioTask": "on & visual inspection"
+            },
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "40°"
+            },
+            {
+              "visibleDescription": "fuel gauge",
+              "visibleTask": "check & note"
+            },
+            {
+              "visibleDescription": "main switch",
+              "visibleTask": "off"
+            }
+          ]
+        },
+        {
+          "name": "left wing",
+          "items": [
+            {
+              "visibleDescription": "flaps"
+            },
+            {
+              "visibleDescription": "aileron"
+            },
+            {
+              "visibleDescription": "nav lights"
+            },
+            {
+              "visibleDescription": "stall warning"
+            },
+            {
+              "visibleDescription": "main gear left"
+            },
+            {
+              "visibleDescription": "pitot tube cover",
+              "audioDescription": "pietoe tube cover",
+              "visibleTask": "remove",
+              "audioConfirmation": "removed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

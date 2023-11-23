@@ -1,0 +1,30 @@
+{
+  "airframe": "Airbus A321 NEO",
+  "airframeId" : "A321NEO",
+  "checklists": [
+    {
+      "name": "cockpit check procedure",
+      "sections": [
+        {
+          "name": "toliss plugin",
+          "items": [
+            {
+              "visibleDescription": "ext power",
+              "audioDescription": "external power",
+              "visibleTask": "request",
+              "audioTask": "request",
+              "audioConfirmation": "requested"
+            },
+            {
+              "visibleDescription": "blockfuel",
+              "audioDescription": "block fuel",
+              "visibleTask": "request",
+              "audioTask": "request",
+              "audioConfirmation": "requested"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

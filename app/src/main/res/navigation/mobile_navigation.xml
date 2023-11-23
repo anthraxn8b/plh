@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_init">
+
+    <fragment
+        android:id="@+id/navigation_init"
+        android:name="eu.kairat.dev.atchelper.ui.init.InitFragment"
+        tools:layout="@layout/fragment_init" />
+
+    <fragment
+        android:id="@+id/navigation_checklists"
+        android:name="eu.kairat.dev.atchelper.ui.checklists.ChecklistsFragment"
+        tools:layout="@layout/fragment_checklists" />
+
+    <fragment
+        android:id="@+id/navigation_atc"
+        android:name="eu.kairat.dev.atchelper.ui.atc.AtcFragment"
+        tools:layout="@layout/fragment_atc" />
+
+<!--
+
+    <fragment
+        android:id="@+id/navigation_init"
+        android:name="eu.kairat.dev.atchelper.ui.init.InitFragment"
+        android:label="@string/title_init"
+        tools:layout="@layout/fragment_init" />
+
+    <fragment
+        android:id="@+id/navigation_checklists"
+        android:name="eu.kairat.dev.atchelper.ui.checklists.ChecklistsFragment"
+        android:label="@string/title_checklists"
+        tools:layout="@layout/fragment_checklists" />
+
+    <fragment
+        android:id="@+id/navigation_atc"
+        android:name="eu.kairat.dev.atchelper.ui.atc.AtcFragment"
+        android:label="@string/title_atc"
+        tools:layout="@layout/fragment_atc" />
+
+-->
+
+</navigation>
