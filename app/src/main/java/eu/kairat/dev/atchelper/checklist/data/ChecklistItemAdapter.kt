@@ -177,7 +177,13 @@ class ChecklistItemAdapter(
                     ttsh.readPositionThenExecute(section.items[adapterPosition], fun() {
                         //stth.listen(fun(text: String) {
                         voskh.listen(fun(text: String) {
-                            if ( text in listOf("check", "checked")) toggle()
+                            Log.d(logTag, "Checking...")
+                            if ( text in listOf("check", "checked")) {
+                                Log.d(logTag, "Checking... positive!")
+                                toggle()
+                            } else {
+                                Log.w(logTag, "Checking... negative!")
+                            }
                             //if ("checked" == text) toggle()
                         })
                     })

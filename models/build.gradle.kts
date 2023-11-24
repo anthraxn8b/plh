@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import java.util.UUID
 
 plugins {
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         minSdk = 34
-        targetSdk = 34
+        //targetSdk = 34
     }
     buildFeatures {
         buildConfig = false
@@ -19,7 +20,6 @@ android {
         getByName("main").assets.srcDirs("$buildDir/generated/assets")
     }
 }
-
 
 tasks.register("genUUID") {
     fun uuid() : String = UUID.randomUUID().toString()
@@ -32,6 +32,4 @@ tasks.register("genUUID") {
     }
 }
 
-preBuild {
-    dependsOn("genUUID")
-}
+tasks.preBuild.dependsOn("genUUID")

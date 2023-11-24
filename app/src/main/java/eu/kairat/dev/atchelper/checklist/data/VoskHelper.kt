@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import org.json.JSONObject
 import org.vosk.LibVosk
 import org.vosk.LogLevel
 import org.vosk.Model
@@ -37,7 +38,7 @@ class VoskHelper(private val activity: Activity) {
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                 activity,
-                arrayOf<String>(Manifest.permission.RECORD_AUDIO),
+                arrayOf(Manifest.permission.RECORD_AUDIO),
                 400
             )
         }// else {
@@ -88,21 +89,31 @@ class VoskHelper(private val activity: Activity) {
         speechService!!.startListening(object : RecognitionListener {
 
             override fun onPartialResult(hypothesis: String?) {
-                Log.d("SPEECH", "onPartialResults()... Hypothesis: $hypothesis")
+                //Log.d("SPEECH", "onPartialResult()... Hypothesis: $hypothesis")
             }
 
             override fun onResult(hypothesis: String?) {
-                Log.d("SPEECH", "onResults()... Hypothesis: $hypothesis")
+                Log.d("SPEECH", "onResult()... Hypothesis: $hypothesis")
+                if (hypothesis.isNullOrEmpty()) {
+                    retry()
+                } else {
+                    val jsonObject = JSONObject(hypothesis)
+                    val text = (jsonObject.get("text") as String)
+                    callback(text.trim().lowercase())
+                    stopListening()
+                }
             }
 
             override fun onFinalResult(hypothesis: String?) {
                 Log.d("SPEECH", "onFinalResult()... Hypothesis: $hypothesis")
+                /*
                 if (hypothesis.isNullOrEmpty()) {
                     retry()
                 } else {
                     callback(hypothesis.trim().lowercase())
                     stopListening()
                 }
+                */
             }
 
             override fun onError(exception: Exception?) {
