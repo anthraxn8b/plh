@@ -13,7 +13,6 @@ import org.vosk.Model
 import org.vosk.Recognizer
 import org.vosk.android.RecognitionListener
 import org.vosk.android.SpeechService
-import org.vosk.android.SpeechStreamService
 import org.vosk.android.StorageService
 import java.io.IOException
 
@@ -21,7 +20,6 @@ class VoskHelper(private val activity: Activity) {
 
     private lateinit var model: Model
     private var speechService: SpeechService? = null
-    private var speechStreamService: SpeechStreamService? = null
 
     private var activated = true
 
@@ -29,34 +27,26 @@ class VoskHelper(private val activity: Activity) {
         LibVosk.setLogLevel(LogLevel.INFO)
 
         // Check if user has given permission to record audio, init the model after permission is granted
-
-        // Check if user has given permission to record audio, init the model after permission is granted
         val permissionCheck = ContextCompat.checkSelfPermission(
-            activity.applicationContext,
-            Manifest.permission.RECORD_AUDIO
+            activity.applicationContext, Manifest.permission.RECORD_AUDIO
         )
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.RECORD_AUDIO),
-                400
+                activity, arrayOf(Manifest.permission.RECORD_AUDIO), 400
             )
-        }// else {
+        }
         initModel()
-        //}
     }
 
     private fun initModel() {
-        StorageService.unpack(activity, "model-en-us", "model",
-            { model: Model? ->
-                this.model = model!!
-                Log.d("VOSK HELPER", "Model loaded.")
-            },
-            { exception: IOException ->
-                //setErrorState(
-                Log.e("VOSK HELPER", "Failed to unpack the model: " + exception.message)
-                //)
-            })
+        StorageService.unpack(activity, "model-en-us", "model", { model: Model? ->
+            this.model = model!!
+            Log.d("VOSK HELPER", "Model loaded.")
+        }, { exception: IOException ->
+            //setErrorState(
+            Log.e("VOSK HELPER", "Failed to unpack the model: " + exception.message)
+            //)
+        })
     }
 
     fun stopListening() {
@@ -64,7 +54,9 @@ class VoskHelper(private val activity: Activity) {
         speechService = null
     }
 
-    fun listen(callback: (String) -> Unit) {
+    fun listen(
+        matchOneOf: List<String>, noOfAllowedMisses: Int, callback: () -> Unit
+    ) {
 
         if (!activated) {
             Log.d("SPEECH", "STT is disabled.")
@@ -75,14 +67,13 @@ class VoskHelper(private val activity: Activity) {
         var retryCount = 0
         fun retry(): Boolean {
             retryCount++
-            if (3 < retryCount) {
+            if (noOfAllowedMisses < retryCount) {
                 Log.d("SPEECH", "You retried too often.")
                 stopListening()
                 return false
             }
             return true
         }
-
 
         val rec = Recognizer(model, 16000.0f)
         speechService = SpeechService(rec, 16000.0f)
@@ -93,27 +84,25 @@ class VoskHelper(private val activity: Activity) {
             }
 
             override fun onResult(hypothesis: String?) {
-                Log.d("SPEECH", "onResult()... Hypothesis: $hypothesis")
-                if (hypothesis.isNullOrEmpty()) {
-                    retry()
-                } else {
+                if (!hypothesis.isNullOrEmpty()) {
                     val jsonObject = JSONObject(hypothesis)
-                    val text = (jsonObject.get("text") as String)
-                    callback(text.trim().lowercase())
-                    stopListening()
+                    if (jsonObject.has("text")) {
+                        val text = (jsonObject.get("text") as String)
+                        Log.d("SPEECH", "onResult()... Hypothesis: $text")
+                        if (matchOneOf.contains(text)) {
+                            Log.d("SPEECH", "onResult()... Hit. Callback.")
+                            callback()
+                            stopListening()
+                            return
+                        }
+                    }
                 }
+                Log.d("SPEECH", "onResult()...")
+                retry()
             }
 
             override fun onFinalResult(hypothesis: String?) {
-                Log.d("SPEECH", "onFinalResult()... Hypothesis: $hypothesis")
-                /*
-                if (hypothesis.isNullOrEmpty()) {
-                    retry()
-                } else {
-                    callback(hypothesis.trim().lowercase())
-                    stopListening()
-                }
-                */
+                Log.d("SPEECH", "onFinalResult()...")
             }
 
             override fun onError(exception: Exception?) {
@@ -127,24 +116,18 @@ class VoskHelper(private val activity: Activity) {
             }
 
         })
-
     }
 
     fun toggleOnOff() {
         activated = !activated
-        if(!activated) {
+        if (!activated) {
             stopListening()
         }
     }
 
     fun onDestroy() {
-        if (speechService != null) {
-            speechService!!.stop()
-            speechService!!.shutdown()
-        }
-        if (speechStreamService != null) {
-            speechStreamService?.stop()
-        }
+        speechService?.stop()
+        speechService?.shutdown()
     }
 
 }
