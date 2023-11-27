@@ -66,7 +66,6 @@ class ChecklistsFragment : ViewHelperMenuBuilder.ChecklistMenu, CustomFragment(
     }
 
     override fun toggleStt() {
-        //act().stth.toggleOnOff()
         act().voskh.toggleOnOff()
     }
 
@@ -74,19 +73,32 @@ class ChecklistsFragment : ViewHelperMenuBuilder.ChecklistMenu, CustomFragment(
 
         val checklists = act().airframeData[act().selectedAirframeIndex].checklists
 
-        ViewHelperPopupSelect.showSelectList(context, "checklist selection", checklists.map { it.name }) { indexChecklist ->
-            ViewHelperPopupSelect.showSelectList(context ,"checklist section selection", checklists[indexChecklist].sections.map { it.name }) { indexSection ->
-                Log.d( logTag, "Selected checklist section: ${checklists[indexChecklist].name} > ${checklists[indexChecklist].sections[indexSection].name}")
-                checklists[indexChecklist].complete = false
-                checklists[indexChecklist].sections[indexSection].complete = false
-                checklists[indexChecklist].sections[indexSection].items.forEach { it.confirmed = false }
-                setChecklistSectionAdapter(
-                    ChecklistLogic.FullSectionPath(
-                        act().airframeData[act().selectedAirframeIndex],
-                        checklists[indexChecklist],
-                        checklists[indexChecklist].sections[indexSection]
-                    )
+        fun onSelected(indexChecklist: Int, indexSection: Int) {
+
+            Log.d( logTag, "Selected checklist section: ${checklists[indexChecklist].name} > ${checklists[indexChecklist].sections[indexSection].name}")
+
+            ChecklistLogic.preFinish(act().airframeData[act().selectedAirframeIndex], indexChecklist, indexSection)
+
+            setChecklistSectionAdapter(
+                ChecklistLogic.FullSectionPath(
+                    act().airframeData[act().selectedAirframeIndex],
+                    checklists[indexChecklist],
+                    checklists[indexChecklist].sections[indexSection]
                 )
+            )
+        }
+
+        ViewHelperPopupSelect.showSelectList(context, "checklist selection", checklists.map { it.name }) { indexChecklist ->
+
+            // there is only one section so it is automatically chosen
+            if(1 == checklists[indexChecklist].sections.count()) {
+                onSelected(indexChecklist, 0)
+            } else {
+                ViewHelperPopupSelect.showSelectList(
+                    context,
+                    "checklist section selection",
+                    checklists[indexChecklist].sections.map { it.name }
+                ) { indexSection -> onSelected(indexChecklist, indexSection) }
             }
         }
     }
@@ -104,17 +116,21 @@ class ChecklistsFragment : ViewHelperMenuBuilder.ChecklistMenu, CustomFragment(
             return
         }
         setChecklistSectionAdapter(data)
+        act().ttsh.readNewChecklist(data)
     }
 
     private fun setChecklistSectionAdapter(data: ChecklistLogic.FullSectionPath) {
-        setSubtitle(data.airframeData.airframe)
-        setTitle("${data.checklist.name} > ${data.section.name}")
+        setSubtitle("${data.airframeData.airframe} > ${data.checklist.name}")
+        if(1 == data.checklist.sections.size) {
+            setTitle(data.checklist.name)
+        } else {
+            setTitle(data.section.name)
+        }
 
         val adapter = ChecklistItemAdapter(
             requireContext(),
             this,
             act().ttsh,
-            //act().stth,
             act().voskh,
             data.airframeData,
             data.checklist,
@@ -122,6 +138,10 @@ class ChecklistsFragment : ViewHelperMenuBuilder.ChecklistMenu, CustomFragment(
         )
 
         binding.checklistsChecklistItemsRecycler.adapter = adapter
+    }
+
+    fun scrollTo(position: Int) {
+        binding.checklistsChecklistItemsRecycler.scrollToPosition(position)
     }
 
     override fun onDestroyView() {

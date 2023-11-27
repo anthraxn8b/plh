@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import org.json.JSONArray
 import org.json.JSONObject
 import org.vosk.LibVosk
 import org.vosk.LogLevel
@@ -43,9 +44,7 @@ class VoskHelper(private val activity: Activity) {
             this.model = model!!
             Log.d("VOSK HELPER", "Model loaded.")
         }, { exception: IOException ->
-            //setErrorState(
             Log.e("VOSK HELPER", "Failed to unpack the model: " + exception.message)
-            //)
         })
     }
 
@@ -55,7 +54,7 @@ class VoskHelper(private val activity: Activity) {
     }
 
     fun listen(
-        matchOneOf: List<String>, noOfAllowedMisses: Int, callback: () -> Unit
+        matchOneOf: List<String>, noOfAllowedMisses: Int, callback: (String) -> Unit
     ) {
 
         if (!activated) {
@@ -68,41 +67,39 @@ class VoskHelper(private val activity: Activity) {
         fun retry(): Boolean {
             retryCount++
             if (noOfAllowedMisses < retryCount) {
-                Log.d("SPEECH", "You retried too often.")
+                Log.d("SPEECH", "Unable to recognize valid voice input.")
                 stopListening()
                 return false
             }
             return true
         }
 
-        val rec = Recognizer(model, 16000.0f)
+        stopListening()
+        val rec = Recognizer(model, 16000.0f, JSONArray(matchOneOf).toString())
         speechService = SpeechService(rec, 16000.0f)
         speechService!!.startListening(object : RecognitionListener {
 
             override fun onPartialResult(hypothesis: String?) {
-                //Log.d("SPEECH", "onPartialResult()... Hypothesis: $hypothesis")
+                Log.v("SPEECH", "onPartialResult()... Hypothesis: $hypothesis")
             }
 
-            override fun onResult(hypothesis: String?) {
-                if (!hypothesis.isNullOrEmpty()) {
-                    val jsonObject = JSONObject(hypothesis)
-                    if (jsonObject.has("text")) {
-                        val text = (jsonObject.get("text") as String)
-                        Log.d("SPEECH", "onResult()... Hypothesis: $text")
-                        if (matchOneOf.contains(text)) {
-                            Log.d("SPEECH", "onResult()... Hit. Callback.")
-                            callback()
-                            stopListening()
-                            return
-                        }
-                    }
+            override fun onResult(hypothesis: String) {
+
+                val recognized = JSONObject(hypothesis).get("text") as String
+
+                if(recognized.isBlank()) {
+                    Log.v("SPEECH", "onResult()...EMPTY")
+                    retry()
+                    return
                 }
-                Log.d("SPEECH", "onResult()...")
-                retry()
+
+                Log.d("SPEECH", "onResult()... Hypothesis: $recognized")
+                callback(recognized)
+                stopListening()
             }
 
             override fun onFinalResult(hypothesis: String?) {
-                Log.d("SPEECH", "onFinalResult()...")
+                Log.v("SPEECH", "onFinalResult()...")
             }
 
             override fun onError(exception: Exception?) {

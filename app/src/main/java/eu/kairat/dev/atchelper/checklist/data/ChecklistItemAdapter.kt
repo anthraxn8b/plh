@@ -24,7 +24,6 @@ class ChecklistItemAdapter(
     private val context: Context,
     private val checklistsFragment: ChecklistsFragment,
     private val ttsh: TtsHelper,
-    //private val stth: SttHelper,
     private val voskh: VoskHelper,
     private val airframe: AirframeData,
     private val checklist: Checklist,
@@ -38,7 +37,6 @@ class ChecklistItemAdapter(
         view: View,
         private val checklistsFragment: ChecklistsFragment,
         private val ttsh: TtsHelper,
-        //private val stth: SttHelper,
         private val voskh: VoskHelper,
         private val adapter: RecyclerView.Adapter<ChecklistItemViewHolder>,
         private val airframe: AirframeData,
@@ -46,7 +44,10 @@ class ChecklistItemAdapter(
         private val section: ChecklistSection
     ) : RecyclerView.ViewHolder(view) {
 
-        private val logTag = "CL VIEW HOLDER"
+        private val logTag = "CL_VIEW_HOLDER"
+
+        // TODO: If the section ends, automatically select the next section. This configuration must be changeable.
+        private val autoContinue = true
 
         // view elements
         private val checklistItemView: RelativeLayout = view.findViewById(R.id.checklist_item_row)
@@ -58,40 +59,41 @@ class ChecklistItemAdapter(
             checklistItemView.findViewById(R.id.status_symbol)
 
         fun init() {
-
             val item = section.items[adapterPosition]
 
             visibleDescriptionTextView.text = item.visibleDescription
-            var task = "check"
-            if (!item.visibleTask.isNullOrEmpty()) {
-                task = item.visibleTask
-            }
-            visibleTaskTextView.text = task
+            visibleTaskTextView.text =
+                if (!item.visibleTask.isNullOrEmpty()) item.visibleTask
+                else AirframeData.ChecklistItem.standardTaskName
             checklistItemView.setOnClickListener {
-                toggle()
+                toggle(AirframeData.ChecklistItem.standardConfirmationPhrase)
             }
             selfFormat()
         }
 
-        private fun toggle() {
-            //stth.stopListening()
+        private fun toggle(audioConfirmation: String) {
+            val sequenceAdapterPosition = adapterPosition
+            Log.d(logTag, "Toggling position $sequenceAdapterPosition...")
+
             voskh.stopListening()
 
-            if (section.items[adapterPosition].confirmed) {
+            if (section.items[sequenceAdapterPosition].confirmed) {
                 Log.d(logTag, "Cannot unconfirm a confirmed item!")
                 return
             }
-            if (adapterPosition > 0 && !section.items[adapterPosition - 1].confirmed) {
+            if (sequenceAdapterPosition > 0 && !section.items[sequenceAdapterPosition - 1].confirmed) {
                 Log.d(logTag, "Cannot jump over items!")
                 return
             }
 
-            ttsh.confirmPosition(section.items[adapterPosition])
+            ttsh.confirmPosition(audioConfirmation)
 
-            section.items[adapterPosition].confirmed = true
+            section.items[sequenceAdapterPosition].confirmed = true
+            Log.d(logTag, "Self formatting position $sequenceAdapterPosition...")
             selfFormat()
+            Log.d(logTag, "Self formatting position $sequenceAdapterPosition...done.")
 
-            if (section.items.size == adapterPosition + 1) {
+            if (section.items.size == sequenceAdapterPosition + 1) {
                 // because unselecting is already handled, the toggle only can be a Task
                 Log.d(logTag, "Last element in section confirmed.")
 
@@ -101,36 +103,73 @@ class ChecklistItemAdapter(
                 if (null == checklist.sections.firstOrNull { !it.complete }) {
                     // all sections of this checklist are complete - so the checklist is
                     checklist.complete = true
+                    ttsh.readChecklistComplete(checklist, null)
 
                     // TODO: Check if there is a next checklist. If not... Selecting checklist and section should be possible via menu.
+                    if (null == airframe.checklists.firstOrNull { !it.complete }) {
+                        // all checklists of this airframe are complete - so the airframe is
+                        airframe.complete = true
 
-                    // if there is another checklist
-                    Log.d(logTag, "Opening dialog for switch to next checklist.")
-                    ViewHelperPopupSelect.showYesNo(context,
-                        "CLEAR ALL CHECKLISTS?",
-                        "There is no section and/or checklist left. Do you want to clear all checklists?",
-                        "YES",
-                        "no",
-                        fun() {
-                            Log.d(
-                                logTag,
-                                "Clearing all checklists!"
-                            ); checklistsFragment.reset()
-                        },
-                        // TODO: Implement behavior! Maybe empty page with showing "No checklist selected."
-                        fun() { Log.w(logTag, "Not clearing checklists. TODO: Implement me!") })
+
+                        // if there is no other checklist
+                        //Log.d(logTag, "Opening dialog for switch to next checklist.")
+                        ViewHelperPopupSelect.showYesNo(context,
+                            "CLEAR ALL CHECKLISTS?",
+                            "There is no section and/or checklist left. Do you want to clear all checklists?",
+                            "YES",
+                            "no",
+                            fun() {
+                                Log.d(
+                                    logTag,
+                                    "Clearing all checklists!"
+                                ); checklistsFragment.reset()
+                            },
+                            // TODO: Implement behavior! Maybe empty page with showing "No checklist selected."
+                            fun() { Log.w(logTag, "Not clearing checklists. TODO: Implement me!") })
+                    } else {
+                        // if there is another checklist
+
+                        if(!autoContinue) {
+                            Log.d(logTag, "Opening dialog for switch to next checklist.")
+                            ViewHelperPopupSelect.showYesNo(context,
+                                "Next?",
+                                "Continue to next checklist?",
+                                "YES",
+                                "no",
+                                fun() { checklistsFragment.setNextChecklistSectionAdapter() },
+                                // TODO: Implement behavior! Maybe empty page with showing "No checklist selected."
+                                fun() {
+                                    Log.w(
+                                        logTag,
+                                        "Not selecting next section. TODO: Implement me!"
+                                    )
+                                })
+                        } else {
+                            checklistsFragment.setNextChecklistSectionAdapter()
+                        }
+                    }
                 } else {
                     // there are more sections to process in the current checklist
-                    Log.d(logTag, "Opening dialog for switch to next section.")
+                    ttsh.readChecklistComplete(checklist, section)
 
-                    ViewHelperPopupSelect.showYesNo(context,
-                        "Next?",
-                        "Continue to next section?",
-                        "YES",
-                        "no",
-                        fun() { checklistsFragment.setNextChecklistSectionAdapter() },
-                        // TODO: Implement behavior! Maybe empty page with showing "No checklist selected."
-                        fun() { Log.w(logTag, "Not selecting next section. TODO: Implement me!") })
+                    if(!autoContinue) {
+                        Log.d(logTag, "Opening dialog for switch to next section.")
+                        ViewHelperPopupSelect.showYesNo(context,
+                            "Next?",
+                            "Continue to next section?",
+                            "YES",
+                            "no",
+                            fun() { checklistsFragment.setNextChecklistSectionAdapter() },
+                            // TODO: Implement behavior! Maybe empty page with showing "No checklist selected."
+                            fun() {
+                                Log.w(
+                                    logTag,
+                                    "Not selecting next section. TODO: Implement me!"
+                                )
+                            })
+                    } else {
+                        checklistsFragment.setNextChecklistSectionAdapter()
+                    }
                 }
 
             }
@@ -138,7 +177,8 @@ class ChecklistItemAdapter(
             // handle next element (next unchecked element on list)
             section.items.forEachIndexed { _, _ ->
                 run {
-                    adapter.notifyItemChanged(adapterPosition + 1)
+                    adapter.notifyItemChanged(sequenceAdapterPosition + 1)
+                    checklistsFragment.scrollTo(sequenceAdapterPosition + 1)
                 }
             }
         }
@@ -154,9 +194,10 @@ class ChecklistItemAdapter(
         }
 
         private fun selfFormat() {
+            val sequenceAdapterPosition = adapterPosition
 
-            if (section.items[adapterPosition].confirmed) {
-                Log.d(logTag, "CONFIRMED: $adapterPosition")
+            if (section.items[sequenceAdapterPosition].confirmed) {
+                Log.d(logTag, "CONFIRMED: $sequenceAdapterPosition")
 
                 checklistItemView.setBackgroundColor(colorRes(R.color.cl_text_desc_checked_backgroundColor))
                 visibleDescriptionTextView.setTextColor(colorRes(R.color.cl_text_desc_checked_textColor))
@@ -174,14 +215,16 @@ class ChecklistItemAdapter(
 
             } else {
 
-                if (0 == adapterPosition || section.items[adapterPosition - 1].confirmed) {
-                    Log.d(logTag, "UNCONFIRMED - NEXT: $adapterPosition")
+                if (0 == sequenceAdapterPosition || section.items[sequenceAdapterPosition - 1].confirmed) {
+                    Log.d(logTag, "UNCONFIRMED - NEXT: $sequenceAdapterPosition")
 
-                    ttsh.readPositionThenExecute(section.items[adapterPosition], fun() {
-                        //stth.listen(fun(text: String) {
-                        voskh.listen(listOf("check", "checked"), 5, fun() {
+                    ttsh.readPositionThenExecute(section.items[sequenceAdapterPosition], fun() {
+                        voskh.listen(
+                            section.items[sequenceAdapterPosition].acceptedPhrases,
+                            5,
+                            fun(audioConfirmation: String) {
                             Log.d(logTag, "Triggering...")
-                            toggle()
+                            toggle(audioConfirmation)
                         })
                     })
 
@@ -200,9 +243,9 @@ class ChecklistItemAdapter(
                     checkedStatusImageView.scaleY = 1.5f
 
                 } else {
-                    Log.d(logTag, "UNCONFIRMED: $adapterPosition")
+                    Log.d(logTag, "UNCONFIRMED: $sequenceAdapterPosition")
 
-                    if (adapterPosition % 2 == 0) {
+                    if (sequenceAdapterPosition % 2 == 0) {
                         checklistItemView.setBackgroundColor(colorRes(R.color.cl_text_desc_unchecked_even_backgroundColor))
                     } else {
                         checklistItemView.setBackgroundColor(colorRes(R.color.cl_text_desc_unchecked_odd_backgroundColor))
@@ -237,7 +280,7 @@ class ChecklistItemAdapter(
             context,
             adapterLayoutView,
             checklistsFragment,
-            ttsh, /*stth*/
+            ttsh,
             voskh,
             this,
             airframe,
@@ -247,7 +290,7 @@ class ChecklistItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        Log.d(logTag, "Called getItemCount(). Result: " + section.items.size)
+        Log.v(logTag, "Called getItemCount(). Result: " + section.items.size)
         return section.items.size
     }
 
@@ -255,9 +298,4 @@ class ChecklistItemAdapter(
         Log.d(logTag, "Called onBindViewHolder().")
         holder.init()
     }
-}/*
-fun TextView.setTextColorRes(@ColorRes colorRes: Int) {
-    val color = ContextCompat.getColor(context, colorRes)
-    setTextColor(color)
 }
-*/

@@ -12,7 +12,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import eu.kairat.dev.atchelper.checklist.data.AirframeChecklistsDatasource
-import eu.kairat.dev.atchelper.checklist.data.SttHelper
 import eu.kairat.dev.atchelper.checklist.data.TtsHelper
 import eu.kairat.dev.atchelper.checklist.data.VoskHelper
 import eu.kairat.dev.atchelper.checklist.data.structure.AirframeData
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var ttsh: TtsHelper
 
-    //lateinit var stth : SttHelper
     lateinit var voskh : VoskHelper
 
     lateinit var airframeData : List<AirframeData>
@@ -48,25 +46,17 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         Log.d("MAIN ACT", "Loading custom data...")
+
         Log.d("MAIN ACT", "Load AIRFRAMES...")
         airframeData = AirframeChecklistsDatasource().loadAirframeChecklist(this)
+
         Log.d("MAIN ACT", "Load TTS...")
         ttsh = TtsHelper(this)
-        //initTts()
-        Log.d("MAIN ACT", "Load STT...")
-        //stth = SttHelper(this)
-        voskh = VoskHelper(this)
-        Log.d("MAIN ACT", "Loading custom data...DONE.")
-    }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val r = super.onPrepareOptionsMenu(menu)
-        // TODO: This has to check the current settings - somehow... Where do we store such things?
-        if(false) {
-            menu?.getItem(1)?.isEnabled = false
-            menu?.getItem(2)?.isEnabled = false
-        }
-        return r
+        Log.d("MAIN ACT", "Load STT...")
+        voskh = VoskHelper(this)
+
+        Log.d("MAIN ACT", "Loading custom data...DONE.")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -87,7 +77,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         ttsh.destroy()
-        //stth.destroy()
         voskh.onDestroy()
     }
 }

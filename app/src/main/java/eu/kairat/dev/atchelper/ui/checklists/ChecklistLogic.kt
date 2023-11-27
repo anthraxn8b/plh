@@ -29,6 +29,47 @@ class ChecklistLogic {
             }
         }
 
+        fun preFinish(airframeData: AirframeData, checklistIndex: Int, sectionIndex: Int) {
+            airframeData.checklists.forEachIndexed { currentChecklistIndex, checklist ->
+                if(currentChecklistIndex < checklistIndex) {
+                    checklist.complete = true
+                    checklist.sections.forEach { section ->
+                        section.complete = true
+                        section.items.forEach { item ->
+                            item.confirmed = true
+                        }
+                    }
+                }
+                if(currentChecklistIndex == checklistIndex) {
+                    checklist.complete = false
+                    checklist.sections.forEachIndexed { currentSectionIndex, section ->
+                        if(currentSectionIndex < sectionIndex) {
+                            section.complete = true
+                            section.items.forEach { item ->
+                                item.confirmed = true
+                            }
+                        }
+                        if(currentSectionIndex >= sectionIndex) {
+                            section.complete = false
+                            section.items.forEach { item ->
+                                item.confirmed = false
+                            }
+                        }
+                    }
+                }
+                if(currentChecklistIndex > checklistIndex) {
+                    checklist.complete = false
+                    checklist.sections.forEach { section ->
+                        section.complete = false
+                        section.items.forEach { item ->
+                            item.confirmed = false
+                        }
+                    }
+
+                }
+            }
+        }
+
         fun findFirstIncompleteSection(airframeData: AirframeData) : FullSectionPath? {
             val checklist = airframeData.checklists.firstOrNull { !it.complete }
             if(null != checklist) {

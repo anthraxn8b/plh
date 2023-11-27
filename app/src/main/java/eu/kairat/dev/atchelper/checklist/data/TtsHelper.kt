@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.widget.Toast
 import eu.kairat.dev.atchelper.checklist.data.structure.AirframeData
+import eu.kairat.dev.atchelper.ui.checklists.ChecklistLogic
 import java.util.Locale
 import kotlin.random.Random
 
@@ -29,30 +30,35 @@ class TtsHelper(activity: Activity) {
     }
 
     fun readPositionThenExecute(checklistItem: AirframeData.ChecklistItem, callback: () -> Unit) {
-        val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-        val ranStr = (1..5).map { Random.nextInt(0, charPool.size).let { charPool[it] } }.joinToString("")
-        readPosition(checklistItem, ranStr, object : UtteranceProgressListener() {
+        //val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+        //val ranStr = (1..5).map { Random.nextInt(0, charPool.size).let { charPool[it] } }.joinToString("")
+        //readPosition(checklistItem, ranStr, object : UtteranceProgressListener() {
+        readPosition(checklistItem, null, object : UtteranceProgressListener() {
+
             override fun onStart(utteranceId: String?) {
-
+                Handler(Looper.getMainLooper()).post{ callback() }
             }
 
-            override fun onDone(utteranceId: String?) {
-                if(ranStr == utteranceId) {
-                    // stt is only allowed to run in the main thread
-                    // TODO: This assumes that the incomin callback has to run int he main thread...
-                    Handler(Looper.getMainLooper()).post{ callback() }
-                }
-            }
+            override fun onDone(utteranceId: String?) {}
 
             @Deprecated("Deprecated in Java")
-            override fun onError(utteranceId: String?) {
-
-            }
+            override fun onError(utteranceId: String?) {}
 
         })
     }
 
-    fun readPosition(
+    fun readChecklistComplete(
+        checklist: AirframeData.Checklist,
+        checklistItemSection: AirframeData.ChecklistSection?
+    ) {
+        if(null == checklistItemSection) {
+            tts.speak("Checklist ${checklist.name} completed.", TextToSpeech.QUEUE_ADD, null, null)
+        } else {
+            tts.speak("Section ${checklistItemSection.name} completed.", TextToSpeech.QUEUE_ADD, null, null)
+        }
+    }
+
+    private fun readPosition(
         checklistItem: AirframeData.ChecklistItem,
         utteranceId: String? = null,
         utteranceProgressListener: UtteranceProgressListener? = null) {
@@ -74,16 +80,19 @@ class TtsHelper(activity: Activity) {
 
     }
 
-    fun confirmPosition(checklistItem: AirframeData.ChecklistItem) {
-        var confirmation = "checked"
-        if (!checklistItem.audioConfirmation.isNullOrEmpty()) {
-            confirmation = checklistItem.audioConfirmation
-        }
-        tts.speak(confirmation, TextToSpeech.QUEUE_FLUSH, null, null)
+    fun confirmPosition(audioConfirmation: String) {
+        tts.speak(audioConfirmation, TextToSpeech.QUEUE_FLUSH, null, null)
     }
 
     fun destroy() {
         tts.stop()
         tts.shutdown()
+    }
+
+    fun readNewChecklist(data: ChecklistLogic.FullSectionPath) {
+        tts.speak("Next checklist: ${data.checklist.name}", TextToSpeech.QUEUE_ADD, null, null)
+        if(data.section.name.isNotBlank()) {
+            tts.speak("Next section: ${data.section.name}", TextToSpeech.QUEUE_ADD, null, null)
+        }
     }
 }

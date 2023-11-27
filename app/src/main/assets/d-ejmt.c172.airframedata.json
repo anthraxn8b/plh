@@ -9,37 +9,107 @@
           "name": "cockpit",
           "items": [
             {
-              "visibleDescription": "logbook",
-              "visibleTask": "on board"
+              "visibleDescription": "parking break",
+              "visibleTask": "set",
+              "audioConfirmations": ["set"]
             },
             {
-              "visibleDescription": "ignition",
-              "visibleTask": "off"
+              "visibleDescription": "logbook & ops. guide",
+              "audioDescription": "logbook and pilots operating handbook",
+              "visibleTask": "on board",
+              "audioConfirmations": ["on board"]
+            },
+            {
+              "visibleDescription": "magnetos / ignition",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "master switch",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "dip switches",
+              "visibleTask": "all off",
+              "audioConfirmations": ["all off"]
+            },
+            {
+              "visibleDescription": "avionics",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
             },
             {
               "visibleDescription": "circuit breakers",
-              "visibleTask": "all in"
+              "visibleTask": "all in",
+              "audioConfirmations": ["all in"]
             },
             {
-              "visibleDescription": "main switch",
-              "visibleTask": "on"
+              "visibleDescription": "throttle",
+              "visibleTask": "idle (pulled)",
+              "audioConfirmations": ["idle", "pulled"]
+            },
+            {
+              "visibleDescription": "mixture",
+              "visibleTask": "full lean (pulled)",
+              "audioConfirmations": ["full lean", "lean", "pulled"]
+            },
+            {
+              "visibleDescription": "static air / carburetor",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "up",
+              "audioConfirmations": ["up"]
+            },
+            {
+              "visibleDescription": "trim",
+              "visibleTask": "neutral",
+              "audioConfirmations": ["neutral"]
+            },
+            {
+              "visibleDescription": "fuel shutoff",
+              "visibleTask": "off / disengaged",
+              "audioConfirmations": ["off", "disengaged", "off disengaged"]
+            },
+            {
+              "visibleDescription": "fuels selector",
+              "visibleTask": "both",
+              "audioTask": "set to both",
+              "audioConfirmations": ["set to both", "both"]
+            },
+            {
+              "visibleDescription": "master switch",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
             },
             {
               "visibleDescription": "beacon",
               "visibleTask": "on & visual",
-              "audioTask": "on & visual inspection"
+              "audioTask": "on and visual inspection",
+              "audioConfirmations": ["on", "visual", "visual inspection", "on and visual inspection"]
             },
             {
               "visibleDescription": "flaps",
-              "visibleTask": "40°"
+              "visibleTask": "full down",
+              "audioConfirmations": ["full down"]
             },
             {
               "visibleDescription": "fuel gauge",
-              "visibleTask": "check & note"
+              "visibleTask": "check & note",
+              "audioConfirmations": ["check and note", "checked and noted", "noted and checked", "note and check"]
+            },
+            {
+              "visibleDescription": "annunciation panel",
+              "visibleTask": "test",
+              "audioConfirmations": ["test", "tested"]
             },
             {
               "visibleDescription": "main switch",
-              "visibleTask": "off"
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
             }
           ]
         },
@@ -62,10 +132,630 @@
               "visibleDescription": "main gear left"
             },
             {
-              "visibleDescription": "pitot tube cover",
-              "audioDescription": "pietoe tube cover",
-              "visibleTask": "remove",
-              "audioConfirmation": "removed"
+              "visibleDescription": "pitot tube",
+              "visibleTask": "remove cover",
+              "audioConfirmations": ["remove cover", "cover remove", "cover removed", "removed"]
+            },
+            {
+              "visibleDescription": "pitot tube",
+              "visibleTask": "free & clear",
+              "audioConfirmations": ["free", "clear", "free and clear", "clear and free"]
+            },
+            {
+              "visibleDescription": "landing/taxi light",
+              "visibleTask": "undamaged",
+              "audioConfirmations": ["undamaged"]
+            }
+          ]
+        },
+        {
+          "name": "tail",
+          "items": [
+            {
+              "visibleDescription": "antennas"
+            },
+            {
+              "visibleDescription": "elevator"
+            },
+            {
+              "visibleDescription": "trim"
+            },
+            {
+              "visibleDescription": "rudder"
+            }
+          ]
+        },
+        {
+          "name": "right wing",
+          "items": [
+            {
+              "visibleDescription": "flaps"
+            },
+            {
+              "visibleDescription": "aileron"
+            },
+            {
+              "visibleDescription": "nav lights"
+            },
+            {
+              "visibleDescription": "main gear left"
+            }
+          ]
+        },
+        {
+          "name": "nose",
+          "items": [
+            {
+              "visibleDescription": "wings & body",
+              "visibleTask": "undeformed",
+              "audioConfirmations": ["undeformed"]
+            },
+            {
+              "visibleDescription": "nose wheel"
+            },
+            {
+              "visibleDescription": "prop & spin",
+              "audioDescription": "propeller & spinner",
+              "visibleTask": "intact",
+              "audioConfirmations": ["intact"]
+            },
+            {
+              "visibleDescription": "air intake",
+              "audioDescription": "air intake & filter",
+              "visibleTask": "free & clear",
+              "audioConfirmations": ["free", "clear", "free and clear", "clear and free"]
+            },
+            {
+              "visibleDescription": "cooler",
+              "visibleTask": "clean & undamaged",
+              "audioConfirmations": ["undamaged", "clear", "undamaged and clear", "clear and undamaged"]
+            },
+            {
+              "visibleDescription": "oil level",
+              "visibleTask": "min. 4.5 qts",
+              "audioTask": "minimum of 4.5 quarts",
+              "audioConfirmations": ["minimum of 4.5 quarts", "4.5 quarts", "4.5"]
+            },
+            {
+              "visibleDescription": "tank levels",
+              "audioDescription": "tank level left & right",
+              "visibleTask": "check & note",
+              "audioConfirmations": ["check and note", "checked and noted", "noted and checked", "note and check"]
+            },
+            {
+              "visibleDescription": "fuel system",
+              "visibleTask": "drain & check",
+              "audioConfirmations": ["check and drain", "checked and drained", "drained and checked", "drain and check"]
+            },
+            {
+              "visibleDescription": "static pressure",
+              "audioDescription": "static pressure take-off point",
+              "visibleTask": "free & clear",
+              "audioConfirmations": ["free", "clear", "free and clear", "clear and free"]
+            },
+            {
+              "visibleDescription": "cargo door",
+              "visibleTask": "close & lock",
+              "audioConfirmations": ["closed", "locked", "close and lock", "closed and locked", "locked and closed", "lock and close"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "refuel",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "fuel left",
+              "audioDescription": "fuel left wing",
+              "visibleTask": "check, refill, note",
+              "audioConfirmations": ["check fill note", "checked filled noted"]
+            },
+            {
+              "visibleDescription": "fuel right",
+              "audioDescription": "fuel right wing",
+              "visibleTask": "check, refill, note",
+              "audioConfirmations": ["check fill note", "checked filled noted"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "before start",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "seating position",
+              "visibleTask": "adjust",
+              "audioConfirmations": ["adjust", "adjusted"]
+            },
+            {
+              "visibleDescription": "seatbelts",
+              "visibleTask": "fasten",
+              "audioConfirmations": ["fasten", "fastened"]
+            },
+            {
+              "visibleDescription": "doors & windows",
+              "visibleTask": "close - as needed",
+              "audioConfirmations": ["close", "closed", "as needed"]
+            },
+            {
+              "visibleDescription": "parking break",
+              "visibleTask": "set",
+              "audioConfirmations": ["set"]
+            },
+            {
+              "visibleDescription": "fuel shutoff",
+              "visibleTask": "off / disengaged",
+              "audioConfirmations": ["off", "disengaged", "pushed", "off disengaged"]
+            },
+            {
+              "visibleDescription": "fuel selector",
+              "visibleTask": "both",
+              "audioTask": "set to both",
+              "audioConfirmations": ["set to both", "both"]
+            },
+            {
+              "visibleDescription": "circuit breakers",
+              "visibleTask": "all in",
+              "audioConfirmations": ["all", "all in", "in"]
+            },
+            {
+              "visibleDescription": "avionics",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "beacon",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "mixture",
+              "visibleTask": "full rich (pushed)",
+              "audioConfirmations": ["full rich", "rich", "pushed"]
+            },
+            {
+              "visibleDescription": "carburetor heat",
+              "visibleTask": "off / cold",
+              "audioConfirmations": ["off", "cold", "cold off", "off cold"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "start",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "master switch",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "up",
+              "audioConfirmations": ["up"]
+            },
+            {
+              "visibleDescription": "primer",
+              "visibleTask": "as needed",
+              "audioConfirmations": ["as needed"]
+            },
+            {
+              "visibleDescription": "throttle",
+              "visibleTask": "5-10cm in",
+              "audioTask": "five to ten centimeters in",
+              "audioConfirmations": ["five to ten centimeters in", "five to ten"]
+            },
+            {
+              "visibleDescription": "propeller",
+              "visibleTask": "check & callout",
+              "audioConfirmations": ["prop clear", "check and callout", "callout and check"]
+            },
+            {
+              "visibleDescription": "magnets",
+              "visibleTask": "start & 1000 RPM",
+              "audioConfirmations": ["start and one-thousand rpm", "start one-thousand rpm"]
+            },
+            {
+              "visibleDescription": "RPM",
+              "visibleTask": "1000",
+              "audioConfirmations": ["one-thousand", "one-thousand rpm"]
+            },
+            {
+              "visibleDescription": "oil pressure",
+              "visibleTask": "green",
+              "audioTask": "in green arc",
+              "audioConfirmations": ["green", "in green", "in green arc", "green arc"]
+            },
+            {
+              "visibleDescription": "ammeter",
+              "visibleTask": "zero or charging",
+              "audioConfirmations": ["zero", "charging", "zero or charging", "charging or zero"]
+            },
+            {
+              "visibleDescription": "avionic",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "route preparation",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "avionic",
+              "visibleTask": "set up route",
+              "audioConfirmations": ["set up route", "route set up", "done"]
+            },
+            {
+              "visibleDescription": "altimeter",
+              "visibleTask": "set QNH",
+              "audioConfirmations": ["set", "set", "set qnh", "qnh set"]
+            },
+            {
+              "visibleDescription": "gyro compass",
+              "visibleTask": "adjust",
+              "audioConfirmation": "adjusted",
+              "audioConfirmations": ["adjust", "adjusted"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "taxi",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "taxi lights",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "nav lights",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "pitot heat",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "atc taxi",
+              "visibleTask": "request",
+              "audioConfirmations": ["request", "requested"]
+            },
+            {
+              "visibleDescription": "elevator",
+              "visibleTask": "pull",
+              "audioConfirmations": ["pull", "pulled"]
+            },
+            {
+              "visibleDescription": "lookout & taxi",
+              "visibleTask": "roll",
+              "audioConfirmations": ["roll", "rolling"]
+            },
+            {
+              "visibleDescription": "compass & gyro",
+              "audioDescription": "compass & gyroscopic instruments",
+              "visibleTask": "working",
+              "audioConfirmations": ["working"]
+            },
+            {
+              "visibleDescription": "breaks",
+              "visibleTask": "check"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "before takeoff",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "trim",
+              "visibleTask": "takeoff",
+              "audioConfirmations": ["trim takeoff"]
+            },
+            {
+              "visibleDescription": "break",
+              "visibleTask": "hold",
+              "audioTask": "hold by feet",
+              "audioConfirmations": ["hold", "hold by feet", "by feet"]
+            },
+            {
+              "visibleDescription": "elevator & aileron",
+              "audioDescription": "elevator & aileron. Not rudder!",
+              "visibleTask": "free",
+              "audioConfirmations": ["free"]
+            },
+            {
+              "visibleDescription": "RPM",
+              "visibleTask": "1700",
+              "audioConfirmations": ["one-thousand seven-hundred", "one-thousand seven-hundred rpm"]
+            },
+            {
+              "visibleDescription": "magnetos & carb.",
+              "audioDescription": "magnets & carburetor heat",
+              "visibleTask": "drop 125/50",
+              "audioTask": "maximum RPM drop 125 & 50",
+              "audioConfirmations": ["drop check", "drop checked"]
+            },
+            {
+              "visibleDescription": "RPM",
+              "visibleTask": "1000",
+              "audioConfirmations": ["one-thousand", "one-thousand rpm"]
+            },
+            {
+              "visibleDescription": "oil temperature",
+              "visibleTask": "green",
+              "audioTask": "in green arc",
+              "audioConfirmations": ["green", "in green", "in green arc", "green arc"]
+            },
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "up | 10°",
+              "audioTask": "up or 10° on short field, as needed",
+              "audioConfirmations": ["green", "in green", "in green arc", "green arc"]
+            },
+            {
+              "visibleDescription": "carburetor heat",
+              "audioDescription": "carburetor-heat",
+              "visibleTask": "off / cold (pushed)",
+              "audioConfirmations": ["off", "cold", "pushed", "off cold"]
+            },
+            {
+              "visibleDescription": "landing lights",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "taxi lights",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "strobe lights",
+              "visibleTask": "on",
+              "audioConfirmations": ["on"]
+            },
+            {
+              "visibleDescription": "approach & runway",
+              "visibleTask": "clear",
+              "audioConfirmations": ["clear"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "takeoff",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "transponder",
+              "visibleTask": "mode a/c",
+              "audioTask": "mode alpha & charlie (altitude)",
+              "audioConfirmations": ["charlie", "mode charlie", "altitude"]
+            },
+            {
+              "visibleDescription": "throttle",
+              "visibleTask": "full (2200 RPM)",
+              "audioConfirmations": ["toga power set", "full power", "2200", "2200 rpm"]
+            },
+            {
+              "visibleDescription": "airspeed callout",
+              "audioDescription": "airspeed monitor & callout",
+              "visibleTask": "rising",
+              "audioConfirmations": ["airspeed rising", "rising"]
+            },
+            {
+              "visibleDescription": "airspeed callout",
+              "audioDescription": "monitor airspeed & callout",
+              "visibleTask": "Vr (55 kn)",
+              "audioTask": "V R (55 knots)",
+              "audioConfirmations": ["V R", "fifty-five", "fifty-five knots"]
+            },
+            {
+              "visibleDescription": "airspeed callout",
+              "audioDescription": "monitor airspeed & callout",
+              "visibleTask": "Vx (60 kn)",
+              "audioTask": "V X (60 knots)",
+              "audioConfirmations": ["V X", "sixty", "sixty knots"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "climb",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "airspeed",
+              "audioDescription": "monitor airspeed",
+              "visibleTask": "70-85kn",
+              "audioTask": "70 to 85 knots",
+              "audioConfirmations": ["seventy to eighty", "seventy to eighty knots"]
+            },
+            {
+              "visibleDescription": "altitude",
+              "audioDescription": "monitor altitude",
+              "visibleTask": "+300 ft flaps up",
+              "audioTask": "at 300 ft above ground, flaps up",
+              "audioConfirmations": ["flaps up", "flaps zero"]
+            },
+            {
+              "visibleDescription": "trim",
+              "visibleTask": "adjust",
+              "audioConfirmations": ["adjust", "adjusted"]
+            },
+            {
+              "visibleDescription": "landing lights",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cruise",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "cruise RPM",
+              "visibleTask": "2200-2700",
+              "audioTask": "two-thousand two-hundred up to two-thousand seven-hundred",
+              "audioConfirmations": ["two-thousand two-hundred up to two-thousand seven-hundred", "two-thousand two-hundred up to two-thousand seven-hundred rpm"]
+            },
+            {
+              "visibleDescription": "cruise mixture",
+              "visibleTask": "lean",
+              "audioConfirmations": ["lean", "leaned"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "before landing",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "fuel selector",
+              "visibleTask": "both",
+              "audioConfirmations": ["both"]
+            },
+            {
+              "visibleDescription": "mixture",
+              "visibleTask": "full rich (pushed)",
+              "audioConfirmations": ["full rich", "rich", "pushed"]
+            },
+            {
+              "visibleDescription": "power",
+              "visibleTask": "as required",
+              "audioConfirmations": ["as required"]
+            },
+            {
+              "visibleDescription": "carburetor heat",
+              "visibleTask": "on / warm (pulled)",
+              "audioConfirmations": ["on", "warm", "on warm", "pulled"]
+            },
+            {
+              "visibleDescription": "air speed",
+              "visibleTask": "in white arc",
+              "audioConfirmations": ["white", "in white", "in white arc", "white arc"]
+            },
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "10°",
+              "audioConfirmations": ["ten degrees", "ten", "flaps ten", "flaps ten degrees"]
+            },
+            {
+              "visibleDescription": "trim"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "on final",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "30° (40° short)",
+              "audioTask": "30°, if shortfield 40° possible",
+              "audioConfirmations": ["thirty", "forty", "short field"]
+            },
+            {
+              "visibleDescription": "air speed",
+              "visibleTask": "65 kn",
+              "audioConfirmations": ["sixty-five knots", "sixty-five"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "after landing",
+      "sections": [
+        {
+          "name": "",
+          "items": [
+            {
+              "visibleDescription": "carburetor heat",
+              "visibleTask": "off / cold (pushed)",
+              "audioConfirmations": ["off", "cold", "off cold", "pushed"]
+            },
+            {
+              "visibleDescription": "flaps",
+              "visibleTask": "up",
+              "audioConfirmations": ["flaps up", "up"]
+            },
+            {
+              "visibleDescription": "RPM",
+              "visibleTask": "1000",
+              "audioConfirmations": ["one-thousand", "one-thousand rpm"]
+            },
+            {
+              "visibleDescription": "parking break",
+              "visibleTask": "set",
+              "audioConfirmations": ["set"]
+            },
+            {
+              "visibleDescription": "avionic",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "mixture",
+              "visibleTask": "full lean (pulled)",
+              "audioTask": "full lean (pulled), cutoff",
+              "audioConfirmations": ["full lean", "pulled", "cutoff"]
+            },
+            {
+              "visibleDescription": "magnetos",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
+            },
+            {
+              "visibleDescription": "master switch",
+              "visibleTask": "off",
+              "audioConfirmations": ["off"]
             }
           ]
         }

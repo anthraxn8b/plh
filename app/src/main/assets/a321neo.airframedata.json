@@ -12,15 +12,13 @@
               "visibleDescription": "ext power",
               "audioDescription": "external power",
               "visibleTask": "request",
-              "audioTask": "request",
-              "audioConfirmation": "requested"
+              "audioConfirmations": ["request", "requested"]
             },
             {
               "visibleDescription": "blockfuel",
               "audioDescription": "block fuel",
               "visibleTask": "request",
-              "audioTask": "request",
-              "audioConfirmation": "requested"
+              "audioConfirmations": ["request", "requested"]
             }
           ]
         }
