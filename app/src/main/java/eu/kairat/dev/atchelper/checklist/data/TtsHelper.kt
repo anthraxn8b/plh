@@ -45,6 +45,7 @@ class TtsHelper(activity: Activity) {
             override fun onError(utteranceId: String?) {}
 
         })
+        Handler(Looper.getMainLooper()).post{ callback() }
     }
 
     fun readChecklistComplete(

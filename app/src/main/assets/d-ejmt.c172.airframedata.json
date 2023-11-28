@@ -89,12 +89,12 @@
               "visibleDescription": "beacon",
               "visibleTask": "on & visual",
               "audioTask": "on and visual inspection",
-              "audioConfirmations": ["on", "visual", "visual inspection", "on and visual inspection"]
+              "audioConfirmations": ["on", "visual", "visual inspection", "on and visual", "on and visual inspection"]
             },
             {
               "visibleDescription": "flaps",
               "visibleTask": "full down",
-              "audioConfirmations": ["full down"]
+              "audioConfirmations": ["full down", "down"]
             },
             {
               "visibleDescription": "fuel gauge",
@@ -545,6 +545,11 @@
               "visibleDescription": "approach & runway",
               "visibleTask": "clear",
               "audioConfirmations": ["clear"]
+            },
+            {
+              "visibleDescription": "atc",
+              "visibleTask": "lined up & waiting",
+              "audioConfirmations": ["atc check"]
             }
           ]
         }

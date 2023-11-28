@@ -65,9 +65,12 @@ class ChecklistItemAdapter(
             visibleTaskTextView.text =
                 if (!item.visibleTask.isNullOrEmpty()) item.visibleTask
                 else AirframeData.ChecklistItem.standardTaskName
+            // TODO: Check if this is really a solution...
+            /*
             checklistItemView.setOnClickListener {
                 toggle(AirframeData.ChecklistItem.standardConfirmationPhrase)
             }
+            */
             selfFormat()
         }
 
@@ -175,12 +178,16 @@ class ChecklistItemAdapter(
             }
 
             // handle next element (next unchecked element on list)
+            /*
             section.items.forEachIndexed { _, _ ->
                 run {
                     adapter.notifyItemChanged(sequenceAdapterPosition + 1)
                     checklistsFragment.scrollTo(sequenceAdapterPosition + 1)
                 }
             }
+            */
+            adapter.notifyItemChanged(sequenceAdapterPosition + 1)
+            checklistsFragment.scrollTo(sequenceAdapterPosition + 1)
         }
 
         private fun colorRes(@ColorRes colorRes: Int): Int {
@@ -198,6 +205,9 @@ class ChecklistItemAdapter(
 
             if (section.items[sequenceAdapterPosition].confirmed) {
                 Log.d(logTag, "CONFIRMED: $sequenceAdapterPosition")
+
+                checklistItemView.setOnClickListener(null)
+                checklistItemView.isClickable = false
 
                 checklistItemView.setBackgroundColor(colorRes(R.color.cl_text_desc_checked_backgroundColor))
                 visibleDescriptionTextView.setTextColor(colorRes(R.color.cl_text_desc_checked_textColor))
@@ -218,9 +228,17 @@ class ChecklistItemAdapter(
                 if (0 == sequenceAdapterPosition || section.items[sequenceAdapterPosition - 1].confirmed) {
                     Log.d(logTag, "UNCONFIRMED - NEXT: $sequenceAdapterPosition")
 
+                    checklistItemView.setOnClickListener {
+                        toggle(AirframeData.ChecklistItem.standardConfirmationPhrase)
+                    }
+                    checklistItemView.isClickable = true
+
+                    val accPhrases = section.items[sequenceAdapterPosition].acceptedPhrases!!
+                    Log.d(logTag, "Item: ${section.items[sequenceAdapterPosition].visibleDescription}")
+                    Log.d(logTag, "Accepted phrases: $accPhrases")
                     ttsh.readPositionThenExecute(section.items[sequenceAdapterPosition], fun() {
                         voskh.listen(
-                            section.items[sequenceAdapterPosition].acceptedPhrases,
+                            accPhrases,
                             5,
                             fun(audioConfirmation: String) {
                             Log.d(logTag, "Triggering...")
@@ -244,6 +262,9 @@ class ChecklistItemAdapter(
 
                 } else {
                     Log.d(logTag, "UNCONFIRMED: $sequenceAdapterPosition")
+
+                    checklistItemView.setOnClickListener(null)
+                    checklistItemView.isClickable = false
 
                     if (sequenceAdapterPosition % 2 == 0) {
                         checklistItemView.setBackgroundColor(colorRes(R.color.cl_text_desc_unchecked_even_backgroundColor))

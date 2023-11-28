@@ -25,16 +25,24 @@ data class AirframeData(
         private val audioConfirmations : List<String>?,
         var confirmed                  : Boolean
     ) {
-        private val prepListAcceptedPhrases = mutableListOf<String>()
-        init {
-            prepListAcceptedPhrases.add(standardTaskName)
-            prepListAcceptedPhrases.add(standardConfirmationPhrase)
+        var acceptedPhrases : List<String>? = null
+
+            get() {
+                if(null == field) {
+                    initAcceptedPhrases()
+                }
+                return field
+            }
+            private set
+
+        private fun initAcceptedPhrases() {
+            val prepListAcceptedPhrases = mutableListOf(standardTaskName, standardConfirmationPhrase)
             if (!audioConfirmations.isNullOrEmpty()) {
                 audioConfirmations.forEach { prepListAcceptedPhrases.add(it.lowercase()) }
             }
-        }
 
-        var acceptedPhrases = prepListAcceptedPhrases.toList()
+            acceptedPhrases = prepListAcceptedPhrases.toList()
+        }
 
         companion object {
             const val standardTaskName = "check"

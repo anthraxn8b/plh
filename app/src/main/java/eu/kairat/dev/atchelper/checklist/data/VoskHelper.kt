@@ -75,7 +75,11 @@ class VoskHelper(private val activity: Activity) {
         }
 
         stopListening()
-        val rec = Recognizer(model, 16000.0f, JSONArray(matchOneOf).toString())
+        val ml = mutableListOf<String>()
+            ml.addAll(matchOneOf)
+            ml.add("[unk]")
+        val rec = Recognizer(model, 16000.0f, JSONArray(ml).toString())
+        //val rec = Recognizer(model, 16000.0f)
         speechService = SpeechService(rec, 16000.0f)
         speechService!!.startListening(object : RecognitionListener {
 
@@ -91,11 +95,17 @@ class VoskHelper(private val activity: Activity) {
                     Log.v("SPEECH", "onResult()...EMPTY")
                     retry()
                     return
+                } else if(matchOneOf.contains(recognized)) {
+                    Log.d("SPEECH", "onResult()... Hypothesis: $recognized")
+                    callback(recognized)
+                    stopListening()
+                    return
                 }
 
-                Log.d("SPEECH", "onResult()... Hypothesis: $recognized")
-                callback(recognized)
-                stopListening()
+                // does not match
+                Log.d("SPEECH", "onResult()... Unknown: $recognized")
+                retry()
+                return
             }
 
             override fun onFinalResult(hypothesis: String?) {
