@@ -32,6 +32,10 @@ class ChecklistItemAdapter(
 
     private val logTag = "CL ADAPTER"
 
+    // holds the currently active item
+    // is used for full screen long click to check the active entry
+    var activeChecklistItemView: RelativeLayout? = null
+
     class ChecklistItemViewHolder(
         private val context: Context,
         view: View,
@@ -65,13 +69,16 @@ class ChecklistItemAdapter(
             visibleTaskTextView.text =
                 if (!item.visibleTask.isNullOrEmpty()) item.visibleTask
                 else AirframeData.ChecklistItem.standardTaskName
-            // TODO: Check if this is really a solution...
-            /*
-            checklistItemView.setOnClickListener {
-                toggle(AirframeData.ChecklistItem.standardConfirmationPhrase)
-            }
-            */
+
             selfFormat()
+
+            // enable long tap everywhere to confirm
+            checklistItemView.setOnLongClickListener {
+                Log.d(logTag, "Checked currently active item by long press.")
+                (adapter as ChecklistItemAdapter).activeChecklistItemView?.callOnClick()
+                return@setOnLongClickListener true
+            }
+
         }
 
         private fun toggle(audioConfirmation: String) {
@@ -232,6 +239,7 @@ class ChecklistItemAdapter(
                         toggle(AirframeData.ChecklistItem.standardConfirmationPhrase)
                     }
                     checklistItemView.isClickable = true
+                    (adapter as ChecklistItemAdapter).activeChecklistItemView = checklistItemView
 
                     val accPhrases = section.items[sequenceAdapterPosition].acceptedPhrases!!
                     Log.d(logTag, "Item: ${section.items[sequenceAdapterPosition].visibleDescription}")
