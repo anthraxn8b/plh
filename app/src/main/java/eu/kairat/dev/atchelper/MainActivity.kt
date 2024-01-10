@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -16,6 +18,7 @@ import eu.kairat.dev.atchelper.checklist.data.TtsHelper
 import eu.kairat.dev.atchelper.checklist.data.VoskHelper
 import eu.kairat.dev.atchelper.checklist.data.structure.AirframeData
 import eu.kairat.dev.atchelper.databinding.ActivityMainBinding
+import eu.kairat.dev.atchelper.ui.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +32,17 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var airframeData : List<AirframeData>
 
+    private var sharedViewModel : SharedViewModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
+
+        sharedViewModel!!.callsign.observe(this, Observer {
+            // TODO: Perform an action with the latest item data.
+            Log.d("MAIN ACT", "CALLSIGN CHANGED!")
+        })
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

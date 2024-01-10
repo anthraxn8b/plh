@@ -4,13 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.checklists.ChecklistsFragment">
+    tools:context=".ui.checklists.ChecklistsFragment"
+    android:longClickable="true"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/checklists_checklist_items_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
+        android:clickable="true"
+        android:longClickable="true"
+        android:background="@color/black"
     />
 
 </FrameLayout>

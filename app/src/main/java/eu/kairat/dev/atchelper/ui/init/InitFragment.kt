@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import eu.kairat.dev.atchelper.databinding.FragmentInitBinding
 import eu.kairat.dev.atchelper.getAirframeChecklists
@@ -21,6 +22,17 @@ class InitFragment : CustomFragment(
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentInitBinding? = null
     private val binding get() = _binding!!
+/*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // create object of SharedViewModel
+        //val model = ViewModelProvider(requireActivity()).get(InitViewModel::class.java)
+
+        //viewModel = ViewModelProvider(act())[InitViewModel::class.java]
+    }
+*/
+    var viewModel : InitViewModel?  = null
 
     override fun onCreateViewCustom(
             inflater: LayoutInflater,
@@ -31,12 +43,18 @@ class InitFragment : CustomFragment(
         Log.d(logTag, "Constructing $this ...")
         Log.d(logTag, "Selected index is: ${act().selectedAirframeIndex}")
 
+        // create the view-model
+        // TODO: Maybe using the activity here for a shared model (activity) makes sense?
+        viewModel = ViewModelProvider(this)[InitViewModel::class.java]
+
         // create view binding
         _binding = FragmentInitBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // create the view-model
-        val viewModel = ViewModelProvider(this)[InitViewModel::class.java]
+
+        //binding.callsign.text = viewModel.callsign
+
+
 
         // populate the view-model with the potential data selection
         // (may be a good idea if the underlying data list can change...)
@@ -79,14 +97,14 @@ class InitFragment : CustomFragment(
                 val selectedItemText = parent.getItemAtPosition(position).toString()
                 Log.d(logTag, "Selected item index: $position")
                 Log.d(logTag, "Selected item text:  $selectedItemText")
-                viewModel.setAirframeId(selectedItemText)
+                viewModel!!.setAirframeId(selectedItemText)
                 // TODO: Do not store the position but the complete airframe data!
                 act().selectedAirframeIndex = position
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // TODO: Block other fragments / invalidate config
                 Log.d(logTag, "Unselected all items.")
-                viewModel.setAirframeId("")
+                viewModel!!.setAirframeId("")
                 // TODO: Do not store the position but the complete airframe data!
                 act().selectedAirframeIndex = -1
             }

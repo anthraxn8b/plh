@@ -1,11 +1,10 @@
-package eu.kairat.dev.atchelper.ui.init
+package eu.kairat.dev.atchelper.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class InitViewModel : ViewModel() {
+class SharedViewModel : ViewModel() {
 
     private val _airframeId = MutableLiveData<String>().apply {
         value = ""
@@ -21,28 +20,9 @@ class InitViewModel : ViewModel() {
     }
     val callsign: LiveData<String> = _callsign
 
-        /*
-        get() {
-            Log.d("XXX", "XXX READING CAllSIGN")
-            return "FOO"
-        }
-        set(inValue) {
-            Log.d("XXX", "XXX SETTING CAllSIGN")
-            _callsign.value = inValue
-        }
-        */
-/*
-    fun getCallsign() : String {
-        Log.d("XXX", "XXX READING CAllSIGN")
-        if(callsign.value.isNullOrEmpty()) return ""
-        return callsign.value!!
-    }
-
     fun setCallsign(callsign : String) {
-        Log.d("XXX", "XXX SETTING CAllSIGN")
         _callsign.value = callsign
     }
-*/
 
     private val _instructor = MutableLiveData<String>().apply {
         value = ""

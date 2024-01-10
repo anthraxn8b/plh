@@ -19,6 +19,7 @@ import eu.kairat.dev.atchelper.checklist.data.structure.AirframeData.Checklist
 import eu.kairat.dev.atchelper.checklist.data.structure.AirframeData.ChecklistSection
 import eu.kairat.dev.atchelper.ui.checklists.ChecklistsFragment
 import eu.kairat.dev.atchelper.ui.checklists.ViewHelperPopupSelect
+import eu.kairat.dev.atchelper.ui.init.InitFragment
 
 class ChecklistItemAdapter(
     private val context: Context,
@@ -35,6 +36,17 @@ class ChecklistItemAdapter(
     // holds the currently active item
     // is used for full screen long click to check the active entry
     var activeChecklistItemView: RelativeLayout? = null
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+        // enable long tap everywhere to confirm
+        recyclerView.setOnLongClickListener {
+            Log.d(logTag, "Checked currently active item by long pressxxxxx.")
+            (recyclerView.adapter as ChecklistItemAdapter).activeChecklistItemView?.callOnClick()
+            return@setOnLongClickListener true
+        }
+    }
 
     class ChecklistItemViewHolder(
         private val context: Context,
@@ -241,18 +253,40 @@ class ChecklistItemAdapter(
                     checklistItemView.isClickable = true
                     (adapter as ChecklistItemAdapter).activeChecklistItemView = checklistItemView
 
-                    val accPhrases = section.items[sequenceAdapterPosition].acceptedPhrases!!
-                    Log.d(logTag, "Item: ${section.items[sequenceAdapterPosition].visibleDescription}")
-                    Log.d(logTag, "Accepted phrases: $accPhrases")
-                    ttsh.readPositionThenExecute(section.items[sequenceAdapterPosition], fun() {
-                        voskh.listen(
-                            accPhrases,
-                            5,
-                            fun(audioConfirmation: String) {
-                            Log.d(logTag, "Triggering...")
-                            toggle(audioConfirmation)
+                    if(!section.items[sequenceAdapterPosition].atc.isNullOrEmpty()) {
+                        // touch approval required
+
+                        //val bodenfunkstelle = checklistsFragment.act().supportFragmentManager.fragments.first { if(it is InitFragment) return view  }
+                        //section.items[sequenceAdapterPosition].atc.forEach { it.tx.replace("[bodenfunkstelle]", "${}") }
+
+                        ttsh.readPositionWithAtc(section.items[sequenceAdapterPosition])
+                        ViewHelperPopupSelect.showInfo(
+                            context,
+                            "ATC",
+                            section.items[sequenceAdapterPosition].atc!![0].tx,
+                            fun() {
+                                Log.d(logTag, "Triggering...")
+                                toggle("ATC DONE")
+                            }
+                        )
+                    } else {
+                        // no touch approval required
+                        val accPhrases = section.items[sequenceAdapterPosition].acceptedPhrases!!
+                        Log.d(
+                            logTag,
+                            "Item: ${section.items[sequenceAdapterPosition].visibleDescription}"
+                        )
+                        Log.d(logTag, "Accepted phrases: $accPhrases")
+                        ttsh.readPositionThenExecute(section.items[sequenceAdapterPosition], fun() {
+                            voskh.listen(
+                                accPhrases,
+                                5,
+                                fun(audioConfirmation: String) {
+                                    Log.d(logTag, "Triggering...")
+                                    toggle(audioConfirmation)
+                                })
                         })
-                    })
+                    }
 
                     checklistItemView.setBackgroundColor(colorRes(R.color.cl_text_desc_next_backgroundColor))
                     visibleDescriptionTextView.setTextColor(colorRes(R.color.cl_text_desc_next_textColor))

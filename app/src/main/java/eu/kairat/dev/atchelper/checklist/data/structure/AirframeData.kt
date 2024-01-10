@@ -23,6 +23,7 @@ data class AirframeData(
         val visibleTask                : String?,
         val audioTask                  : String?,
         private val audioConfirmations : List<String>?,
+        val atc                        : List<AtcCalls>?,
         var confirmed                  : Boolean
     ) {
         var acceptedPhrases : List<String>? = null
@@ -48,5 +49,12 @@ data class AirframeData(
             const val standardTaskName = "check"
             const val standardConfirmationPhrase = "checked"
         }
+    }
+
+    data class AtcCalls(
+        val tx : String,
+        val rx : String = ""
+    ) {
+
     }
 }

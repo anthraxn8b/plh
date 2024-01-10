@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import eu.kairat.dev.atchelper.checklist.data.ChecklistItemAdapter
 import eu.kairat.dev.atchelper.databinding.FragmentChecklistsBinding
 import eu.kairat.dev.atchelper.ui.CustomFragment
@@ -30,6 +31,22 @@ class ChecklistsFragment : ViewHelperMenuBuilder.ChecklistMenu, CustomFragment(
         // create view binding
         _binding = FragmentChecklistsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // enable long tap everywhere to confirm
+        binding.checklistsChecklistItemsRecycler.setOnLongClickListener {
+            Log.d(logTag, "Hurray Recycler!")
+            //(recyclerView.adapter as ChecklistItemAdapter).activeChecklistItemView?.callOnClick()
+            return@setOnLongClickListener true
+        }
+        binding.checklistsChecklistItemsRecycler.setOnClickListener {
+            Log.d(logTag, "A!")
+            //(recyclerView.adapter as ChecklistItemAdapter).activeChecklistItemView?.callOnClick()
+            return@setOnClickListener
+        }
+        binding.checklistsChecklistItemsRecycler.setOnTouchListener { v, event ->
+            Log.e(logTag, "ONTOUCH")
+            return@setOnTouchListener false
+        }
 
         // DO CUSTOM STUFF /////////////////////////////////////////////////////////////////////////
 

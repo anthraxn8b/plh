@@ -46,13 +46,13 @@
             },
             {
               "visibleDescription": "throttle",
-              "visibleTask": "idle (pulled)",
-              "audioConfirmations": ["idle", "pulled"]
+              "visibleTask": "idle",
+              "audioConfirmations": ["idle"]
             },
             {
               "visibleDescription": "mixture",
-              "visibleTask": "full lean (pulled)",
-              "audioConfirmations": ["full lean", "lean", "pulled"]
+              "visibleTask": "lean",
+              "audioConfirmations": ["full lean", "lean"]
             },
             {
               "visibleDescription": "static air / carburetor",
@@ -70,15 +70,15 @@
               "audioConfirmations": ["neutral"]
             },
             {
-              "visibleDescription": "fuel shutoff",
-              "visibleTask": "off / disengaged",
-              "audioConfirmations": ["off", "disengaged", "off disengaged"]
+              "visibleDescription": "fuel tap",
+              "visibleTask": "open",
+              "audioConfirmations": ["open"]
             },
             {
-              "visibleDescription": "fuels selector",
+              "visibleDescription": "fuel selector",
               "visibleTask": "both",
-              "audioTask": "set to both",
-              "audioConfirmations": ["set to both", "both"]
+              "audioTask": "both",
+              "audioConfirmations": ["both"]
             },
             {
               "visibleDescription": "master switch",
@@ -413,6 +413,26 @@
               "visibleTask": "adjust",
               "audioConfirmation": "adjusted",
               "audioConfirmations": ["adjust", "adjusted"]
+            },
+            {
+              "visibleDescription": "atc",
+              "visibleTask": "radiocheck",
+              "audioConfirmations": ["radiocheck"],
+              "atc": [
+                { "tx": "[bodenfunkstelle] [kennzeichen] VERSTÄNDIGUNG",
+                  "rx":  "[kennzeichen] VERSTÄNDIGUNG [LEVEL]"
+                }
+              ]
+            },
+            {
+              "visibleDescription": "atc",
+              "visibleTask": "check with ctr.",
+              "audioTask": "check with controller",
+              "atc": [
+                { "tx": "[bodenfunkstelle] [kennzeichen] GUTEN TAG! VFR SCHULFLUG NACH [ziel], SCHÜLER [name] LEHRER [name]",
+                  "rx":  "WIND, BAHN, QNH"
+                }
+              ]
             }
           ]
         }
@@ -442,7 +462,10 @@
             {
               "visibleDescription": "atc taxi",
               "visibleTask": "request",
-              "audioConfirmations": ["request", "requested"]
+              "audioConfirmations": ["request", "requested"],
+              "atc": [
+                { "tx": "ROLLE (ÜBER [position/rollstrecke]) ZUM/ZUR [position] (VERMEIDE [information])"}
+              ]
             },
             {
               "visibleDescription": "elevator",
@@ -709,6 +732,7 @@
             {
               "visibleDescription": "air speed",
               "visibleTask": "65 kn",
+              "audioTask": "65 knots",
               "audioConfirmations": ["sixty-five knots", "sixty-five"]
             }
           ]

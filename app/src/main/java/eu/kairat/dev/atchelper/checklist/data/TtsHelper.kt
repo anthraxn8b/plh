@@ -59,6 +59,10 @@ class TtsHelper(activity: Activity) {
         }
     }
 
+    fun readPositionWithAtc(checklistItem: AirframeData.ChecklistItem) {
+        readPosition(checklistItem)
+    }
+
     private fun readPosition(
         checklistItem: AirframeData.ChecklistItem,
         utteranceId: String? = null,

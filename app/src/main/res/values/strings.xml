@@ -4,6 +4,9 @@
     <string name="title_checklists">CHECKLISTS</string>
     <string name="title_atc">ATC</string>
     <string name="airframe_label">AIRFRAME</string>
+    <string name="callsign_label">CALLSIGN</string>
+    <string name="instructor_label">INSTRUCTOR</string>
+    <string name="student_label">STUDENT</string>
     <string name="reset">RESET</string>
     <string name="next_section">NEXT SECTION</string>
     <string name="status_symbol_description">Shows the checklist item confirmation status like a checkbox.</string>

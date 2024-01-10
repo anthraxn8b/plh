@@ -49,5 +49,22 @@ class ViewHelperPopupSelect {
                 .show()
         }
 
+        fun showInfo(
+            context: Context?,
+            popupTitle: String,
+            message: String,
+            callbackDone: () -> Unit,
+        ) {
+            AlertDialog.Builder(context)
+                .setTitle(popupTitle)
+                .setMessage(message)
+                .setPositiveButton("DONE") { dialog, _ ->
+                    Log.d(logTag, "PRESSED: DONE")
+                    dialog.dismiss()
+                    callbackDone()
+                }
+                .show()
+        }
+
     }
 }
